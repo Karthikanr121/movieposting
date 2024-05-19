@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Add Comment{% endblock %}
+
+{% block content %}
+<h5>Add Comment for {{ movie.name }}</h5>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="text">Comment:</label>
+        <textarea class="form-control" name="text" id="text" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Comment</button>
+</form>
+{% endblock %}

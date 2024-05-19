@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% block title %}Category: {{ category.name }}{% endblock %}
+{% block content %}
+<body>
+<h1>{{ category.name }}Movies</h1>
+<p>{{ category.description }}</p>
+<ul>
+    {% for movie in movies %}
+    <li>
+    <a href="{% url 'movie_detail' movie.pk %}">{{ movie.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

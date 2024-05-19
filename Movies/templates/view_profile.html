@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}View Profile{% endblock %}
+
+{% block content %}
+<h2>Profile</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <label for="username">Username:</label>&nbsp;&nbsp;
+        <input type="text" name="username" id="username" value="{{ user.username }}" readonly><br><br>
+        <label for="first_name">First Name:</label>&nbsp;&nbsp;
+        <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}"><br><br>
+        <label for="last_name">Last Name:</label>&nbsp;&nbsp;
+        <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}"><br><br>
+        <label for="email">Email:</label>&nbsp;&nbsp;
+        <input type="email" name="email" id="email" value="{{ user.email }}"><br><br>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+{% endblock %}

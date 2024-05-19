@@ -1,0 +1,59 @@
+
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left Column: Image and Name -->
+        <div class="col-md-4">
+            <img src="{{ movie.image.url }}" alt="{{ movie.name }}" class="img-fluid mb-3">
+            <h2>{{ movie.name }}</h2>
+        </div>
+
+        <!-- Right Column: Details -->
+        <div class="col-md-8">
+            <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+            <p><strong>Category:</strong> <a href="{% url 'category_movies' movie.category.id %}">{{ movie.category.name }}</a></p>
+            <p><strong>Description:</strong> {{ movie.description }}</p>
+            <p><strong>Actors:</strong> {{ movie.actors }}</p>
+            <p><strong>Trailer:</strong> <a href="{{ movie.trailer_link }}" target="_blank">Watch here</a></p>
+            <p><strong>Ratings :</strong>{% for rate in rating %}{{ rate.user }} - {{ rate.rating }}{% empty %}No Ratings yet.{% endfor %}</p>
+            <p><strong>Comments :</strong>{% for comm in comments %}{{ comm.user }} - {{ comm.comment }}{% empty %}No comments yet.{% endfor %}</p>
+
+        </div>
+    </div>
+</div>
+<br><br>
+{% if movie.posted == request.user %}
+<a href="{% url 'delete_movie' movie.pk %}"><button type="submit" class="btn btn-primary">Delete</button></a>&nbsp;&nbsp;
+<a href="{% url 'update_movie' movie.pk %}"><button type="submit" class="btn btn-primary">Update</button></a>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'add_rating' movie.id %}">
+        {% csrf_token %}
+        <label for="rating">Rate this movie:</label>
+        <select name="rating" id="rating" class="form-control">
+            {% for i in 5|range_filter %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Login</a> to rate this movie.</p>
+{% endif %}
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'add_comment' movie.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="text">Add a comment:</label>
+            <textarea class="form-control" name="text" id="text" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Login</a> to add a comment.</p>
+{% endif %}
+{% endblock %}

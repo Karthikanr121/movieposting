@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<body>
+    <h2>Update Movie</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Name:</label>&nbsp;&nbsp;&nbsp;
+        <input type="text" name="name" id="name" value="{{ movie.name }}" required><br>
+
+        <label for="image">Image:</label>&nbsp;&nbsp;&nbsp;
+        <input type="file" name="image" id="image"><br>
+        {% if movie.image %}
+            <img src="{{ movie.image.url }}" alt="{{ movie.name }}" width="150"><br>
+        {% endif %}
+
+        <label for="release_date">Release Date:</label>&nbsp;&nbsp;&nbsp;
+        <input type="date" name="release_date" id="release_date" value="{{ movie.release_date }}" required><br>
+
+        <label for="description">Description:</label>&nbsp;&nbsp;&nbsp;
+        <textarea name="description" id="description" required>{{ movie.description }}</textarea><br>
+
+        <label for="actors">Actors:</label>&nbsp;&nbsp;&nbsp;
+        <input type="text" name="actors" id="actors" value="{{ movie.actors }}" required><br>
+
+        <label for="category">Category:</label>&nbsp;&nbsp;&nbsp;
+        <select name="category" id="category" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if category == movie.category %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="trailer_link">Trailer Link:</label>&nbsp;&nbsp;&nbsp;
+        <input type="url" name="trailer_link" id="trailer_link" value="{{ movie.trailer_link }}" required><br>
+
+        <button type="submit"class="btn btn-warning">Update Movie</button>
+    </form>
+{% endblock %}
